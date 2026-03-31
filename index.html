@@ -1,12 +1,27 @@
 <!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Empty Project</title><meta itemprop="name" content="Empty Project"><meta name="twitter:title" content="Empty Project"><meta property="og:title" content="Empty Project"><meta property="og:site_name" content="Empty Project"><meta name="description" content="Start with a blank project."><meta itemprop="description" content="Start with a blank project."><meta property="og:description" content="Start with a blank project."><meta name="twitter:description" content="Start with a blank project."><script crossorigin="anonymous" src="./external/runtime/runtime.js"></script><script crossorigin="anonymous" src="./external/xr/xr.js" async="true" data-preload-chunks="face, slam"></script><script>
   window.addEventListener('xrloaded', function() {
-    XR8.XrController.configure({
-      imageTargetData: [{
-        name: 'assets/imageii.png',
-        imagePath: 'assets/imageii.png',
-        type: 'PLANAR'
-      }]
-    })
+    var img = new Image()
+    img.onload = function() {
+      var w = img.naturalWidth
+      var h = img.naturalHeight
+      XR8.XrController.configure({
+        imageTargetData: [{
+          name: 'assets/imageii.png',
+          imagePath: 'assets/imageii.png',
+          type: 'PLANAR',
+          properties: {
+            originalWidth: w,
+            originalHeight: h,
+            left: 0,
+            top: 0,
+            width: w,
+            height: h,
+            isRotated: false
+          }
+        }]
+      })
+    }
+    img.src = 'assets/imageii.png'
   })
 </script></head><body><script src="bundle.js"></script><div id="tap-hint" style="position: fixed;
   bottom: 100px;
