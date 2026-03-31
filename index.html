@@ -22,6 +22,42 @@
       })
     }
     img.src = 'assets/imageii.png'
+
+    // Image Target 떨림 방지 스무딩
+    var THREE = window.THREE
+    var SMOOTH = 0.2
+    var smoothPos = null
+    var smoothQuat = null
+    var itObj = null
+    var tracking = false
+
+    XR8.addCameraPipelineModule({
+      name: 'it-smoother',
+      onRender: function() {
+        if (!itObj) {
+          var scene = XR8.CloudStudioThreejs.xrScene().scene
+          scene.traverse(function(o) { if (o.name === 'Image Target') itObj = o })
+        }
+        if (!itObj) return
+
+        if (!itObj.visible) {
+          tracking = false
+          return
+        }
+
+        if (!tracking) {
+          smoothPos = itObj.position.clone()
+          smoothQuat = itObj.quaternion.clone()
+          tracking = true
+          return
+        }
+
+        smoothPos.lerp(itObj.position, SMOOTH)
+        smoothQuat.slerp(itObj.quaternion, SMOOTH)
+        itObj.position.copy(smoothPos)
+        itObj.quaternion.copy(smoothQuat)
+      }
+    })
   })
 </script></head><body><script src="bundle.js"></script><div id="tap-hint" style="position: fixed;
   bottom: 100px;
